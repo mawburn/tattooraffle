@@ -1,6 +1,10 @@
 import { Winner } from '../Randomizer'
 import getRand from './getRand'
 
+/**
+ * Generates an array of transaction IDs, duplicating the ID based on
+ * the dollar amount sent by the user.
+ * Then randomly grabs one. */
 const getWinner = (fileContents: object[]): Winner => {
   const ticketArr: any[] = []
 
