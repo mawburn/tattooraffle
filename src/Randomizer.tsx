@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { AppContext } from './App'
 import getNames from './utils/getNames'
 import getRand from './utils/getRand'
