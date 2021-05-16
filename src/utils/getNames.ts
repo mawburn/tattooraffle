@@ -14,7 +14,7 @@ const getNames = (fileContents: object[]): string[] => {
     names.add(f['Name of sender/receiver'])
   })
 
-  return shuffleArray(Array.from(names).slice(0, 100))
+  return shuffleArray(Array.from(names)).slice(0, 100)
 }
 
 export default getNames

@@ -4,8 +4,6 @@ import { AppContext } from './App'
 const List = () => {
   const { fileContents } = useContext(AppContext)
 
-  console.log(fileContents)
-
   return (
     <div>
       <h2>Ticket holders</h2>

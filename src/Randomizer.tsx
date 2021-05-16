@@ -9,51 +9,40 @@ export interface Winner {
   name: string
 }
 
-const getNext = (timer: number, name: string) =>
-  new Promise<string>(res => {
+const getTimer = (timer: number) =>
+  new Promise<void>(res => {
     setTimeout(() => {
-      res(name)
+      res()
     }, timer)
   })
 
 const Randomizer = () => {
-  const lastName = useRef('')
   const { fileContents } = useContext(AppContext)
   const [winner, setWinner] = useState<Winner | null>(null)
   const [spinnerName, setSpinnerName] = useState<string>('')
 
-  const spin = useCallback(() => {
-    setWinner(getWinner(fileContents))
+  const spin = useCallback(async () => {
+    // grab the winner
+    const _winner = getWinner(fileContents)
+    setWinner(_winner)
+
+    // This is just for show
     const names = getNames(fileContents)
 
     const timer = 100
-    lastName.current = names[getRand(names.length)]
 
     for (let i = 0; i < timer; --i) {
-      getNext(i * 50, lastName.current)
+      await getTimer(i * 50)
 
-      let newName = names[getRand(names.length)]
-
-      while (lastName.current === newName) {
-        newName = names[getRand(names.length)]
-      }
-
-      lastName.current = newName
-      setSpinnerName(newName)
+      setSpinnerName(names[i])
     }
+
+    setTimeout(() => {
+      setSpinnerName(_winner.name)
+    }, 1000)
   }, [fileContents])
 
-  return (
-    <>
-      {!winner ? (
-        <button onClick={spin}>Get Winner</button>
-      ) : (
-        <div>
-          Winner Winner Chicken Dinner: <strong>{winner.name}</strong> (transaction: {winner.id})
-        </div>
-      )}
-    </>
-  )
+  return <>{!winner ? <button onClick={spin}>Get Winner</button> : <div>{spinnerName}</div>}</>
 }
 
 export default Randomizer
