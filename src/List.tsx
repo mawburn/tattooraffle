@@ -8,7 +8,7 @@ const List = () => {
     <div>
       <h2>Ticket holders</h2>
       {fileContents.map((f: any) => (
-        <div className="ticketRow">
+        <div key={f['Transaction ID']} className="ticketRow">
           <div className="ticketId">
             <strong>ID:</strong> {f['Transaction ID']}
           </div>

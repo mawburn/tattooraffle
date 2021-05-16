@@ -1,7 +1,6 @@
 import { useCallback, useContext, useRef, useState } from 'react'
 import { AppContext } from './App'
 import getNames from './utils/getNames'
-import getRand from './utils/getRand'
 import getWinner from './utils/getWinner'
 
 export interface Winner {
@@ -20,6 +19,8 @@ const Randomizer = () => {
   const { fileContents } = useContext(AppContext)
   const [winner, setWinner] = useState<Winner | null>(null)
   const [spinnerName, setSpinnerName] = useState<string>('')
+
+  console.count('update')
 
   const spin = useCallback(async () => {
     // grab the winner
