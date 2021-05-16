@@ -20,6 +20,7 @@ const Randomizer = () => {
   const { fileContents } = useContext(AppContext)
   const [winner, setWinner] = useState<Winner | null>(null)
   const [spinnerName, setSpinnerName] = useState<string>('')
+  const [spinnerDone, setSpinnerDone] = useState<boolean>(false)
 
   const spin = useCallback(async () => {
     // grab the winner
@@ -41,6 +42,7 @@ const Randomizer = () => {
 
     setTimeout(() => {
       setSpinnerName(_winner.name)
+      setSpinnerDone(true)
     }, 1000)
   }, [fileContents])
 
@@ -51,7 +53,10 @@ const Randomizer = () => {
           Get Winner
         </button>
       ) : (
-        <div>{spinnerName}</div>
+        <div>
+          {spinnerDone && 'Winner: '}
+          {spinnerName}
+        </div>
       )}
     </div>
   )
