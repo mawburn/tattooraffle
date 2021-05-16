@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useState } from 'react'
+import List from './List'
+import Randomizer from './Randomizer'
+import Upload from './Upload'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface IAppContext {
+  fileContents: object[]
+  setFileContents: (fileContents: object[]) => void
 }
 
-export default App;
+export const AppContext = createContext<IAppContext>({
+  fileContents: [],
+  setFileContents: (fileContents: object[]) => null,
+})
+
+const App = () => {
+  const [fileContents, setFileContents] = useState<object[]>([])
+
+  return (
+    <AppContext.Provider value={{ fileContents, setFileContents }}>
+      <div className="container">
+        <header>
+          <h1>
+            <img className="mainLogo" src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" />
+            Tattoo Raffle
+          </h1>
+          {Object.keys(fileContents).length === 0 ? (
+            <Upload />
+          ) : (
+            <>
+              <Randomizer />
+              <List />
+            </>
+          )}
+        </header>
+      </div>
+    </AppContext.Provider>
+  )
+}
+
+export default App
