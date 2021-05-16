@@ -1,6 +1,7 @@
 import { useCallback, useContext, useRef, useState } from 'react'
 import { AppContext } from './App'
 import getNames from './utils/getNames'
+import getRand from './utils/getRand'
 import getWinner from './utils/getWinner'
 
 export interface Winner {
@@ -20,8 +21,6 @@ const Randomizer = () => {
   const [winner, setWinner] = useState<Winner | null>(null)
   const [spinnerName, setSpinnerName] = useState<string>('')
 
-  console.count('update')
-
   const spin = useCallback(async () => {
     // grab the winner
     const _winner = getWinner(fileContents)
@@ -32,10 +31,12 @@ const Randomizer = () => {
 
     const timer = 100
 
-    for (let i = 0; i < timer; --i) {
-      await getTimer(i * 50)
+    for (let i = 0; i < timer; i++) {
+      await getTimer(i * 5)
 
-      setSpinnerName(names[i])
+      const nextName = names.length < 100 ? names[getRand(names.length - 1)] : names[i]
+
+      setSpinnerName(nextName)
     }
 
     setTimeout(() => {
@@ -43,7 +44,17 @@ const Randomizer = () => {
     }, 1000)
   }, [fileContents])
 
-  return <>{!winner ? <button onClick={spin}>Get Winner</button> : <div>{spinnerName}</div>}</>
+  return (
+    <div className="spinnerContainer">
+      {!winner ? (
+        <button className="btn" onClick={spin}>
+          Get Winner
+        </button>
+      ) : (
+        <div>{spinnerName}</div>
+      )}
+    </div>
+  )
 }
 
 export default Randomizer
